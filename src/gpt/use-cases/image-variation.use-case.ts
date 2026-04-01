@@ -3,21 +3,21 @@ import OpenAI from "openai";
 import { downloadImageAsPng } from 'src/helpers';
 
 interface Options{
-  baseImage: string;
+  prompt: string;
 }
 
 export const imageVariationUseCase = async (openai: OpenAI, options: Options) => {
-  const { baseImage } = options;
-  const pngImagePath = await downloadImageAsPng(baseImage, true);
+  const { prompt } = options;
 
   try {
-    const response = await openai.images.createVariation({
-      model: 'dall-e-2',
-      image: fs.createReadStream(pngImagePath),
+    const response = await openai.images.generate({
+      model: 'dall-e-3',
+      prompt: `Create a variation of the provided image: ${prompt}`,
       n: 1,
       size: '1024x1024',
+      quality: 'standard',
       response_format: 'url',
-    }); 
+    });
   
     if(!response.data) {
       throw new Error('No image generated');

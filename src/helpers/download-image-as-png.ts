@@ -1,8 +1,8 @@
 import * as path from 'path';
 import * as fs from 'node:fs';
 import sharp from 'sharp';
-import { randomUUID } from 'node:crypto';
 import { InternalServerErrorException } from '@nestjs/common';
+import { generateUuid } from './generate-uuid';
 
 export const downloadImageAsPng = async (url: string, fullPath: boolean = false) => {
   const response = await fetch(url);
@@ -14,7 +14,7 @@ export const downloadImageAsPng = async (url: string, fullPath: boolean = false)
   const folderPath = path.resolve('./','./generated/images/');
   fs.mkdirSync(folderPath, { recursive: true });
   
-  const fileNamePng = `${randomUUID()}.png`;
+  const fileNamePng = `${generateUuid()}.png`;
   const filePath = path.join(folderPath, fileNamePng);
   
   const buffer = Buffer.from(await response.arrayBuffer());
@@ -61,7 +61,7 @@ export const downloadBase64ImageAsPng = async (base64Image: string, fullPath: bo
   const folderPath = path.resolve('./', './generated/images/');
   fs.mkdirSync(folderPath, { recursive: true });
 
-  const fileNamePng = `${randomUUID()}-64.png`;
+  const fileNamePng = `${generateUuid()}-64.png`;
   
   const filePath = path.join(folderPath, fileNamePng);
   // transform to RGBA, png // This is what OpenAI expects

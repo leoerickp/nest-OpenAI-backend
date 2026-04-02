@@ -23,6 +23,10 @@ The API provides various controllers inside the GPT module, exposing endpoints f
 - 🎧 **Audio to Text (`/api/gpt/audio-to-text`):** Full transcription of a voice message uploaded as a media file, powered by the **Whisper** model.
 - 🖼️ **Image Generation (`/api/gpt/image-generation`):** Creates stunning images from text descriptions using **DALL-E 3**.
 - 🌟 **Image Variation (`/api/gpt/image-variation`):** Generates variations of a base image or applies masks using **DALL-E 2** editing features.
+- 👁️ **Extract Text from Image (`/api/gpt/extract-text-from-image`):** Upload an image and extract textual information or descriptions from it, leveraging Vision model capabilities.
+- 🤖 **Financial Assistant (`/api/fa-assistant`):** OpenAI Assistants API integration for conversational AI with persistent threads and managed dialogue state.
+  - `/create-thread`: Initializes a new persistent conversation thread.
+  - `/user-question`: Submits a user message to the thread, processes it via the assistant (Run object), and waits to return the full conversation context.
 
 ## 🛠️ Installation and Setup
 

@@ -1,6 +1,6 @@
-import { IsBase64, IsNotEmpty, IsString } from "class-validator";
+import { IsNotEmpty, IsString } from "class-validator";
 
-export class ImageVariationDto {
+export class ImageToTextDto {
   @IsString()
   @IsNotEmpty()
   prompt: string;

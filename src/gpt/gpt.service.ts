@@ -12,7 +12,7 @@ import {
   textToAudioUseCase,
   translateUseCase,
 } from './use-cases';
-import { AudioToTextDto, ImageGenerationDto, ImageVariationDto, OrthographyDto, ProsConsDicusserDto, TextToAudioDto, TranslateDto } from './dtos';
+import { AudioToTextDto, ImageGenerationDto, ImageToTextDto, ImageVariationDto, OrthographyDto, ProsConsDicusserDto, TextToAudioDto, TranslateDto } from './dtos';
 import OpenAI from 'openai';
 import { OrthographyResponse } from './interfaces';
 
@@ -80,7 +80,7 @@ export class GptService {
     return await imageVariationUseCase(this.openai, { prompt: imageVariationDto.prompt });
   }
 
-  async imageToText(imageFile: Express.Multer.File, prompt: string) {
-    return await imageToTextUseCase(this.openai, { imageFile, prompt });
+  async imageToText(imageFile: Express.Multer.File, imageToTextDto: ImageToTextDto) {
+    return await imageToTextUseCase(this.openai, { imageFile, prompt: imageToTextDto.prompt });
   }
 }

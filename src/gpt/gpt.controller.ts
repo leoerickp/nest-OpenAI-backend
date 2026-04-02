@@ -116,7 +116,7 @@ export class GptController {
         destination: './generated/uploads',
         filename: (req, file, callback) => {
           const fileExtension = file.originalname.split('.').pop();
-          const fileName = `${new Date().getTime()}.${fileExtension}`;
+          const fileName = `${randomUUID()}.${fileExtension}`;
           return callback(null, fileName);
         },
       }),
@@ -130,7 +130,10 @@ export class GptController {
             maxSize: 1000 * 1024 * 5,
             message: 'File is bigger than 5 mb ',
           }),
-          new FileTypeValidator({ fileType: 'image/*' }),
+          new FileTypeValidator({
+            fileType: 'image/*',
+            fallbackToMimetype: true,
+          }),
         ],
       }),
     )

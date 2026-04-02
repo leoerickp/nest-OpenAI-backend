@@ -1,7 +1,5 @@
 import * as fs from 'node:fs';
-import path from 'node:path';
 import OpenAI from "openai";
-import { toFile } from 'openai/uploads';
 import { downloadBase64ImageAsPng, downloadImageAsPng } from "src/helpers";
 
 interface Options{

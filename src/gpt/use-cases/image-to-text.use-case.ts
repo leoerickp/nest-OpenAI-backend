@@ -1,5 +1,6 @@
 import * as fs from 'node:fs';
 import OpenAI from "openai";
+import { downloadBase64ImageAsPng } from 'src/helpers';
 
 interface Options {
   prompt?: string;
@@ -15,8 +16,10 @@ const convertToBase64 = (file: Express.Multer.File) => {
 export const imageToTextUseCase = async (openai: OpenAI, options: Options) => {
   const { imageFile, prompt } = options;
 
+  const base64Image = convertToBase64(imageFile);
+
   const response = await openai.chat.completions.create({
-    model: 'gpt-4-turbo', //'gpt-4-vision-preview',
+    model: 'gpt-4.1', //'gpt-4-vision-preview',
     max_tokens: 1000,
     messages: [
       {
@@ -35,7 +38,7 @@ export const imageToTextUseCase = async (openai: OpenAI, options: Options) => {
           {
             type: 'image_url',
             image_url: {
-              url: convertToBase64(imageFile),
+              url: base64Image,
             },
           },
         ],
@@ -43,5 +46,9 @@ export const imageToTextUseCase = async (openai: OpenAI, options: Options) => {
     ],
   });
 
-  return { msg: response.choices[0].message.content };
+  const fileName = await downloadBase64ImageAsPng(base64Image);
+  
+  const url = `${process.env.BASE_URL}/api/gpt/image-generation/${fileName}`;
+
+  return { url, message: response.choices[0].message.content };
 };

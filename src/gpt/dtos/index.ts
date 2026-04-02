@@ -5,3 +5,4 @@ export * from './text-to-audio.dto';
 export * from './audio-to-text.dto';
 export * from './imge-generation.dto';
 export * from './image-variation.dto';
+export * from './image-to-text.dto';

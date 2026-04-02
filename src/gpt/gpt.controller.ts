@@ -1,6 +1,6 @@
 import { Body, Controller, FileTypeValidator, Get, HttpStatus, MaxFileSizeValidator, Param, ParseFilePipe, Post, Res, UploadedFile, UseInterceptors } from '@nestjs/common';
 import { GptService } from './gpt.service';
-import { OrthographyDto, ProsConsDicusserDto, TextToAudioDto, TranslateDto, AudioToTextDto, ImageGenerationDto, ImageVariationDto } from './dtos';
+import { OrthographyDto, ProsConsDicusserDto, TextToAudioDto, TranslateDto, AudioToTextDto, ImageGenerationDto, ImageVariationDto, ImageToTextDto } from './dtos';
 import type { Response } from 'express';
 import { FileInterceptor } from '@nestjs/platform-express';
 import { diskStorage } from 'multer';
@@ -107,5 +107,36 @@ export class GptController {
   @Post('image-variation')
   imageVariation(@Body() imageVariationDto: ImageVariationDto) {
     return this.gptService.imageVariation(imageVariationDto);
+  }
+
+  @Post('extract-text-from-image')
+  @UseInterceptors(
+    FileInterceptor('file', {
+      storage: diskStorage({
+        destination: './generated/uploads',
+        filename: (req, file, callback) => {
+          const fileExtension = file.originalname.split('.').pop();
+          const fileName = `${new Date().getTime()}.${fileExtension}`;
+          return callback(null, fileName);
+        },
+      }),
+    }),
+  )
+  async extractTextFromImage(
+    @UploadedFile(
+      new ParseFilePipe({
+        validators: [
+          new MaxFileSizeValidator({
+            maxSize: 1000 * 1024 * 5,
+            message: 'File is bigger than 5 mb ',
+          }),
+          new FileTypeValidator({ fileType: 'image/*' }),
+        ],
+      }),
+    )
+    file: Express.Multer.File,
+    @Body() imageToTextDto: ImageToTextDto,
+  ) {
+    return this.gptService.imageToText(file, imageToTextDto);
   }
 }

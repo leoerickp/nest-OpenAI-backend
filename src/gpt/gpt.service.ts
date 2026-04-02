@@ -4,6 +4,7 @@ import { Injectable, NotFoundException } from '@nestjs/common';
 import {
   audioToTextUseCase,
   imageGenerationUseCase,
+  imageToTextUseCase,
   imageVariationUseCase,
   orthographyCheckUseCase,
   prosConsDicusserStreamUseCase,
@@ -77,5 +78,9 @@ export class GptService {
 
   async imageVariation(imageVariationDto: ImageVariationDto) {
     return await imageVariationUseCase(this.openai, { prompt: imageVariationDto.prompt });
+  }
+
+  async imageToText(imageFile: Express.Multer.File, prompt: string) {
+    return await imageToTextUseCase(this.openai, { imageFile, prompt });
   }
 }

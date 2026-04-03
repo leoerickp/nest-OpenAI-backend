@@ -1,6 +1,6 @@
 import { Body, Controller, FileTypeValidator, Get, HttpStatus, MaxFileSizeValidator, Param, ParseFilePipe, Post, Res, UploadedFile, UseInterceptors } from '@nestjs/common';
 import { GptService } from './gpt.service';
-import { OrthographyDto, ProsConsDicusserDto, TextToAudioDto, TranslateDto, AudioToTextDto, ImageGenerationDto, ImageVariationDto, ImageToTextDto } from './dtos';
+import { OrthographyDto, ProsConsDicusserDto, TextToAudioDto, TranslateDto, AudioToTextDto, ImageGenerationDto, ImageVariationDto, ImageToTextDto, UrlImageToTextDto } from './dtos';
 import type { Response } from 'express';
 import { FileInterceptor } from '@nestjs/platform-express';
 import { diskStorage } from 'multer';
@@ -141,5 +141,10 @@ export class GptController {
     @Body() imageToTextDto: ImageToTextDto,
   ) {
     return this.gptService.imageToText(file, imageToTextDto);
+  }
+
+  @Post('extract-text-from-url/:filename')
+  async extractTextFromFileNameImage(@Body() urlImageToTextDto: UrlImageToTextDto, @Param('filename') fileName: string){
+    return this.gptService.fileNameImageToText(urlImageToTextDto, fileName);
   }
 }

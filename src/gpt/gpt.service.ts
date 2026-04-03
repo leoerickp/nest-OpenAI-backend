@@ -11,8 +11,9 @@ import {
   prosConsDicusserUseCase,
   textToAudioUseCase,
   translateUseCase,
+  imageFileNameToTextUseCase,
 } from './use-cases';
-import { AudioToTextDto, ImageGenerationDto, ImageToTextDto, ImageVariationDto, OrthographyDto, ProsConsDicusserDto, TextToAudioDto, TranslateDto } from './dtos';
+import { AudioToTextDto, ImageGenerationDto, ImageToTextDto, ImageVariationDto, OrthographyDto, ProsConsDicusserDto, TextToAudioDto, TranslateDto, UrlImageToTextDto } from './dtos';
 import OpenAI from 'openai';
 import { OrthographyResponse } from './interfaces';
 
@@ -81,6 +82,12 @@ export class GptService {
   }
 
   async imageToText(imageFile: Express.Multer.File, imageToTextDto: ImageToTextDto) {
-    return await imageToTextUseCase(this.openai, { imageFile, prompt: imageToTextDto.prompt });
+    const { prompt } = imageToTextDto;
+    return await imageToTextUseCase(this.openai, { imageFile, prompt });
+  }
+
+  async fileNameImageToText(urlImageToTextDto: UrlImageToTextDto, fileName: string) {
+    const { prompt } = urlImageToTextDto;
+    return await imageFileNameToTextUseCase(this.openai, { prompt, fileName });
   }
 }

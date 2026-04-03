@@ -18,6 +18,8 @@ export const imageToTextUseCase = async (openai: OpenAI, options: Options) => {
 
   const base64Image = convertToBase64(imageFile);
 
+  
+
   const response = await openai.chat.completions.create({
     model: 'gpt-4.1', //'gpt-4-vision-preview',
     max_tokens: 1000,
@@ -47,8 +49,7 @@ export const imageToTextUseCase = async (openai: OpenAI, options: Options) => {
   });
 
   const fileName = await downloadBase64ImageAsPng(base64Image);
-  
-  const url = `${process.env.BASE_URL}/api/gpt/image-generation/${fileName}`;
+  const url = `${process.env.BASE_URL}/api/gpt/image-generation/${fileName}`;  
 
-  return { url, message: response.choices[0].message.content };
+  return { url, fileName, message: response.choices[0].message.content };
 };

@@ -7,3 +7,4 @@ export * from './audio-to-text.use-case';
 export * from './image-generation.use-case';
 export * from './image-variation.use-case';
 export * from './image-to-text.use-case';
+export * from './image-filename-to-text.use-case';
